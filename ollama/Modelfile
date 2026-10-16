@@ -1,0 +1,9 @@
+# Gargi (UdgamLabs, 384M). Thinking on by default; /set nothink turns it off. Reliable context about 16K tokens.
+FROM ./Gargi-Q8_0.gguf
+TEMPLATE {{ .Prompt }}
+RENDERER gemma4
+PARSER gemma4
+PARAMETER temperature 0.7
+PARAMETER top_p 0.95
+PARAMETER top_k 64
+PARAMETER num_ctx 16384
