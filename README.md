@@ -14,7 +14,7 @@ Gargi is named after Gargi Vachaknavi, the Vedic philosopher remembered for aski
 |---|---|
 | Parameters | 384M (Gemma 4-style decoder, sliding-window + global attention) |
 | Training data | ≈17B tokens read in total, all openly licensed or public-domain text plus synthetic text from open models |
-| Context | trained at 32K; **reliable recall up to ~16K tokens** (100% at 8K and 16K, 97% at 20K) |
+| Context | trained at 32K; **reliable recall up to ~16K tokens** (100% at 8K, 93% at 16K, 90% at 20K) |
 | Modes | thinking on (step-by-step reasoning before the answer) or off |
 | Languages | English |
 | Licence | Apache-2.0 |
@@ -76,14 +76,19 @@ HellaSwag, PIQA) still scale with data, and there it is clearly behind.
 
 | Benchmark | Gargi |
 |---|---|
-| GSM8K, thinking on (chat template, 0-shot, greedy) | **36.1** |
-| GSM8K, thinking off | 29.6 |
-| GSM8K 5-shot (lm-eval, no chat template) | 18.9 |
-| MMLU / ARC-E / ARC-C / HellaSwag / WinoGrande / PIQA | 25.5 / 59.9 / 30.5 / 41.3 / 54.9 / 66.5 |
+| GSM8K, thinking on (chat template, 0-shot, greedy) | **36.0** |
+| GSM8K, thinking off | 32.9 |
+| GSM8K 5-shot (lm-eval, no chat template) | 19.8 |
+| MMLU / ARC-E / ARC-C / HellaSwag / WinoGrande / PIQA | 24.9 / 62.3 / 31.0 / 42.0 / 55.3 / 66.4 |
 
-For context, newer small models trained on far more data score higher on maths. Published by their authors, with
-varying settings: Qwen3-0.6B GSM8K 79.2 (thinking), MobileLLM-R1.5-360M GSM8K 52.8, Granite-4.0-H-350M GSM8K 39.3
-(8-shot). Gargi is not a maths specialist.
+**Follow-up questions.** On 50 held-out two-turn chats, Gargi repeats its previous reply in 0% of follow-ups with
+thinking off and 4% with thinking on, and it solves a GSM8K problem asked as the second question of a chat about as well
+as one asked alone (36.0 vs 34.0 on 200 problems). Its answers to follow-ups are still often factually wrong.
+
+For context, newer small models trained on far more data score higher on maths. Reported elsewhere, with varying
+settings: Qwen3-0.6B GSM8K 79.2 (thinking, 0-shot pass@1, as reported in the MobileLLM-R1.5 model card);
+MobileLLM-R1.5-360M GSM8K 52.8 and Granite-4.0-H-350M GSM8K 39.3 (8-shot), published by their authors. Gargi is not a
+maths specialist.
 
 ### Long-context recall (needle in a haystack)
 
@@ -92,7 +97,7 @@ model gets its own start token; lengths beyond a model's declared context are ma
 
 | Model | Params | 8K | 16K | 20K | 24K | 32K |
 |---|---|---|---|---|---|---|
-| **Gargi** | 384M | **100** | **100** | **97** | 30 | 0 |
+| **Gargi** | 384M | **100** | **93** | **90** | 13 | 0 |
 | Qwen3-0.6B | 600M | 100 | 100 | 100 | 100 | 100 |
 | Hunyuan-0.5B-Instruct | 500M | 100 | 100 | 100 | 100 | 100 |
 | Falcon-H1-Tiny-R-0.6B | 600M | 100 | 97 | 100 | 100 | 97 |
@@ -110,11 +115,12 @@ GSM8K with thinking, first 200 test problems, greedy, via Ollama:
 
 | Build | Size | GSM8K (200) | Same answers as f16 |
 |---|---|---|---|
-| f16 | 770 MB | 35.5 | – |
-| **Q8_0 (recommended)** | 410 MB | 34.5 | 95% |
-| Q4_K_M | 238 MB | 34.0 | 83.5% |
+| f16 | 770 MB | 39.0 | – |
+| **Q8_0 (recommended)** | 410 MB | 37.5 | 96.5% |
+| Q4_K_M | 238 MB | 32.0 | 87% |
 
-Differences are within noise at this sample size (±3 points). Use Q8_0 unless memory is tight.
+Q8_0 matches f16 closely; Q4_K_M loses a few points (each score is ±3.4 points at this sample size). Use Q8_0 unless
+memory is tight.
 
 ## Safety
 
