@@ -79,7 +79,7 @@ HellaSwag, PIQA) still scale with data, and there it is clearly behind.
 | GSM8K, thinking on (chat template, 0-shot, greedy) | **36.0** |
 | GSM8K, thinking off | 32.9 |
 | GSM8K 5-shot (lm-eval, no chat template) | 19.8 |
-| MMLU / ARC-E / ARC-C / HellaSwag / WinoGrande / PIQA | 24.9 / 62.3 / 31.0 / 42.0 / 55.3 / 66.4 |
+| MMLU / ARC-E / ARC-C / HellaSwag / WinoGrande / PIQA | 24.9 / 62.2 / 31.0 / 42.0 / 55.2 / 66.4 |
 
 **Follow-up questions.** On 50 held-out two-turn chats, Gargi repeats its previous reply in 0% of follow-ups with
 thinking off and 4% with thinking on, and it solves a GSM8K problem asked as the second question of a chat about as well
