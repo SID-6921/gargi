@@ -1,6 +1,10 @@
+![Gargi · Udgam Labs](./assets/banner.png)
+
+**UDGAM LABS** · Language model · 384M parameters
+
 # Gargi
 
-**Gargi is a 384M-parameter English language model trained from scratch by UdgamLabs on about 17 billion tokens: roughly
+**Gargi is a 384M-parameter English language model trained from scratch by Udgam Labs on about 17 billion tokens: roughly
 1,000× less training data than comparable open models such as Qwen2.5-0.5B.** It thinks step by step on maths
 problems, reads up to about 16,000 tokens, and runs comfortably on a laptop or phone-class device.
 
@@ -122,6 +126,21 @@ GSM8K with thinking, first 200 test problems, greedy, via Ollama:
 Q8_0 matches f16 closely; Q4_K_M loses a few points (each score is ±3.4 points at this sample size). Use Q8_0 unless
 memory is tight.
 
+## Where it falls short
+
+All numbers are from the tables above.
+
+- **Knowledge and everyday commonsense.** Gargi-Base is clearly behind models trained on far more data: MMLU 25.5
+  (near chance; Qwen2.5-0.5B 47.3), HellaSwag 41.5 (SmolLM2-360M 56.3) and PIQA 66.8 (SmolLM2-360M 71.5).
+- **Reasoning against SmolLM2-360M.** SmolLM2-360M, trained on ~4T tokens, is ahead on ARC-Easy (70.2 vs 62.8),
+  ARC-Challenge (38.3 vs 32.3) and WinoGrande (59.0 vs 54.6).
+- **Maths.** GSM8K 36.0 with thinking. Newer small models trained on far more data report more, with varying settings:
+  Qwen3-0.6B 79.2, MobileLLM-R1.5-360M 52.8, Granite-4.0-H-350M 39.3. Gargi is not a maths specialist.
+- **Long context.** Recall falls to 13% at 24K tokens and 0% at 32K; five of the eight other models in the table recall
+  97–100% at both lengths.
+- **Quantization.** Q4_K_M scores 32.0 on the 200-problem GSM8K subset, against 39.0 for f16.
+- **Safety.** Not safety-tuned; it may follow harmful requests (see *Safety*).
+
 ## Safety
 
 Gargi has **not been safety-tuned** beyond a small set of refusal examples. In our tests it **may follow harmful
@@ -144,13 +163,13 @@ explanations where mistakes are acceptable; reading and answering questions abou
 
 ## Training
 
-Gargi was pretrained from scratch by UdgamLabs on openly licensed and public-domain text and synthetic text written by
+Gargi was pretrained from scratch by Udgam Labs on openly licensed and public-domain text and synthetic text written by
 open models (≈17B tokens read in total), extended to a 32K-token context window, and then fine-tuned for chat and
 step-by-step maths reasoning.
 
 ## Data acknowledgements
 
-Gargi was trained from scratch by UdgamLabs on openly licensed and public-domain text, plus synthetic text written by
+Gargi was trained from scratch by Udgam Labs on openly licensed and public-domain text, plus synthetic text written by
 openly licensed models. We gratefully acknowledge the following sources, used under their licences:
 
 - **Web, books, papers and public records:** FineWeb / Ultra-FineWeb (ODC-By 1.0 / Apache-2.0); Wikipedia and
@@ -174,8 +193,12 @@ Apache-2.0 (weights and tokenizer). The chat template is the Gemma 4 template (A
 ```bibtex
 @misc{udgamlabs2026gargi,
   title        = {Gargi: a 384M language model trained from scratch on 17B tokens},
-  author       = {{UdgamLabs}},
+  author       = {{Udgam Labs}},
   year         = {2026},
   howpublished = {\url{https://huggingface.co/udgamlabs/Gargi}}
 }
 ```
+
+---
+
+**About Udgam Labs.** Udgam Labs is an independent AI research lab. We work from first principles: before we build, we understand why things work, whether we are training a model, fine-tuning one or applying AI to a new problem. Udgam (उद्गम) is Sanskrit for origin. [udgamlabs.com](https://udgamlabs.com)
